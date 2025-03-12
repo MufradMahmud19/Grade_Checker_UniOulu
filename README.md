@@ -1,7 +1,7 @@
 # 🎓 CGPA Calculator (University of Oulu Grading System)
 
 A simple **CGPA Calculator** built with **FastAPI** (backend) and **HTML + JavaScript** (frontend).  
-It allows users to enter their grades and calculates CGPA based on the **University of Oulu's grading system**.  
+I made it just for fun! 🤓 It allows users to enter their grades and calculates CGPA manually based on the **University of Oulu's grading system**.
 
 🚀 **Live Calculation**: No need for manual calculations—just enter your grades, and get results instantly!  
 
@@ -51,6 +51,12 @@ python -m http.server 8001
 - Enter the total credits and your grades.
 - Click "Calculate CGPA".
 - Click "Refresh" to reset inputs.
+
+### 🚀 Future Improvements
+✅ Deploying online using Vercel or Render
+✅ Storing results in localStorage
+✅ Adding dark mode UI
+✅ Allowing CSV file upload for bulk calculations
 
 ### 🏆 Contributor
 [Mufrad Mahmud] – Developer
