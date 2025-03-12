@@ -1,4 +1,4 @@
-# 🎓 CGPA Calculator (University of Oulu Grading System)
+# 🎓 Grade Checker (University of Oulu Grading System)
 
 A simple **CGPA Calculator** built with **FastAPI** (backend) and **HTML + JavaScript** (frontend).  
 I made it just for fun! 🤓 It allows users to enter their grades and calculates CGPA manually based on the **University of Oulu's grading system**.
@@ -60,4 +60,5 @@ python -m http.server 8001
 
 ### 🏆 Contributor
 [Mufrad Mahmud] – Developer
+
 ⭐ If you found this project useful, give it a star!
