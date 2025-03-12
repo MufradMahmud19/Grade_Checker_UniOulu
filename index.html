@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input, button { margin: 5px; padding: 8px; font-size: 16px; }
+        button { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>CGPA Calculator</h2>
+
+    <form id="cgpa-form">
+        <label>Total Credits: <input type="number" id="total_credit" required></label><br>
+        <label>Grade 5 Count: <input type="number" id="five" required></label><br>
+        <label>Grade 4 Count: <input type="number" id="four" required></label><br>
+        <label>Grade 3 Count: <input type="number" id="three" required></label><br>
+        <label>Grade 2 Count: <input type="number" id="two" required></label><br>
+        <label>Grade 1 Count: <input type="number" id="one" required></label><br>
+        <label>Pass/Fail Total Credit Count  (sum of the credits): <input type="number" id="pass_cred" required></label><br>
+
+        <button type="submit">Calculate CGPA</button>
+        <button type="button" onclick="resetForm()">Refresh</button>
+    </form>
+
+    <h3 id="result"></h3>
+
+    <script>
+        document.getElementById("cgpa-form").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent page refresh
+
+            const data = {
+                total_credit: parseInt(document.getElementById("total_credit").value),
+                five: parseInt(document.getElementById("five").value),
+                four: parseInt(document.getElementById("four").value),
+                three: parseInt(document.getElementById("three").value),
+                two: parseInt(document.getElementById("two").value),
+                one: parseInt(document.getElementById("one").value),
+                pass_cred: parseInt(document.getElementById("pass_cred").value),
+            };
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/calculate/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                document.getElementById("result").innerText = "Your CGPA: " + result.CGPA;
+            } catch (error) {
+                document.getElementById("result").innerText = "Error calculating CGPA.";
+            }
+        });
+
+        function resetForm() {
+            document.getElementById("cgpa-form").reset();
+            document.getElementById("result").innerText = "";
+        }
+    </script>
+
+</body>
+</html>
