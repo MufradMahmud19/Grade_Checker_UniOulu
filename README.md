@@ -54,8 +54,11 @@ python -m http.server 8001
 
 ### 🚀 Future Improvements
 ✅ Deploying online using Vercel or Render
+
 ✅ Storing results in localStorage
+
 ✅ Adding dark mode UI
+
 ✅ Allowing CSV file upload for bulk calculations
 
 ### 🏆 Contributor
