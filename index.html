@@ -2,27 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CGPA Calculator</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        input, button { margin: 5px; padding: 8px; font-size: 16px; }
-        button { cursor: pointer; }
+        input, button, select { margin: 5px; padding: 8px; font-size: 16px; }
+        .credit-block { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <h2>CGPA Calculator</h2>
 
-    <form id="cgpa-form">
-        <label>Total Credits: <input type="number" id="total_credit" required></label><br>
-        <label>Grade 5 Count: <input type="number" id="five" required></label><br>
-        <label>Grade 4 Count: <input type="number" id="four" required></label><br>
-        <label>Grade 3 Count: <input type="number" id="three" required></label><br>
-        <label>Grade 2 Count: <input type="number" id="two" required></label><br>
-        <label>Grade 1 Count: <input type="number" id="one" required></label><br>
-        <label>Pass/Fail Total Credit Count  (sum of the credits): <input type="number" id="pass_cred" required></label><br>
+    <label>Total Credits (including pass/fail): <input type="number" id="total_credit" required></label><br>
+    <label>Pass/Fail Credits: <input type="number" id="pass_cred" required></label><br>
 
+    <button type="button" onclick="addCreditBlock()">Add Credit Type</button>
+
+    <form id="cgpa-form">
+        <div id="credits-container"></div>
+        <br>
         <button type="submit">Calculate CGPA</button>
         <button type="button" onclick="resetForm()">Refresh</button>
     </form>
@@ -30,17 +28,49 @@
     <h3 id="result"></h3>
 
     <script>
+        let creditBlockCount = 0;
+
+        function addCreditBlock() {
+            const container = document.getElementById("credits-container");
+            const div = document.createElement("div");
+            div.className = "credit-block";
+            div.innerHTML = `
+                <label>Credit Value: <input type="number" name="credit_val" required></label><br>
+                Grade 5s: <input type="number" name="grade5" required><br>
+                Grade 4s: <input type="number" name="grade4" required><br>
+                Grade 3s: <input type="number" name="grade3" required><br>
+                Grade 2s: <input type="number" name="grade2" required><br>
+                Grade 1s: <input type="number" name="grade1" required><br>
+            `;
+            container.appendChild(div);
+            creditBlockCount++;
+        }
+
         document.getElementById("cgpa-form").addEventListener("submit", async function(event) {
-            event.preventDefault(); // Prevent page refresh
+            event.preventDefault();
+
+            const total_credit = parseInt(document.getElementById("total_credit").value);
+            const pass_cred = parseInt(document.getElementById("pass_cred").value);
+
+            const blocks = document.querySelectorAll(".credit-block");
+            const credit_data = [];
+
+            blocks.forEach(block => {
+                const inputs = block.querySelectorAll("input");
+                credit_data.push({
+                    credit_val: parseInt(inputs[0].value),
+                    five: parseInt(inputs[1].value),
+                    four: parseInt(inputs[2].value),
+                    three: parseInt(inputs[3].value),
+                    two: parseInt(inputs[4].value),
+                    one: parseInt(inputs[5].value)
+                });
+            });
 
             const data = {
-                total_credit: parseInt(document.getElementById("total_credit").value),
-                five: parseInt(document.getElementById("five").value),
-                four: parseInt(document.getElementById("four").value),
-                three: parseInt(document.getElementById("three").value),
-                two: parseInt(document.getElementById("two").value),
-                one: parseInt(document.getElementById("one").value),
-                pass_cred: parseInt(document.getElementById("pass_cred").value),
+                total_credit: total_credit,
+                pass_cred: pass_cred,
+                grades: credit_data
             };
 
             try {
@@ -58,7 +88,9 @@
 
         function resetForm() {
             document.getElementById("cgpa-form").reset();
+            document.getElementById("credits-container").innerHTML = "";
             document.getElementById("result").innerText = "";
+            creditBlockCount = 0;
         }
     </script>
 
