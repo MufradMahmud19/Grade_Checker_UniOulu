@@ -48,7 +48,7 @@ python -m http.server 8001
 
 Then, in your browser run,
 ```bash
-[http://127.0.0.1:8001](http://127.0.0.1:8000)
+http://127.0.0.1:8001
 ```
 
 ### 📌 Usage Instructions
