@@ -1,37 +1,59 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
-# Enabling CORS (For fixing frontend request issues)
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allowing all domains (Need to change this in production)
+    allow_origins=["*"],  # Allow all origins (for dev)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Defining input data model
-class GradeInput(BaseModel):
-    total_credit: int
+# Input model for each credit group
+class GradeBlock(BaseModel):
+    credit_val: int
     five: int
     four: int
     three: int
     two: int
     one: int
+
+# Main input model
+class GradeInput(BaseModel):
+    total_credit: int
     pass_cred: int
+    grades: List[GradeBlock]
 
-# CGPA Calculation Function
-def calculate_grade(total_credit, five, four, three, two, one, pass_cred):
-    if total_credit <= pass_cred:  # Prevent division by zero
-        return "Invalid Input: Total credits must be greater than pass/fail credits."
-    return ((five * 5 * 5) + (four * 5 * 4) + (three * 5 * 3) + 
-            (two * 5 * 2) + (one * 5 * 1)) / (total_credit - pass_cred)
+# GPA calculation function
+def calculate_cgpa(data: GradeInput):
+    total_weighted_score = 0
+    total_graded_credits = 0
 
-# API Endpoint
+    for block in data.grades:
+        credit = block.credit_val
+        total_weighted_score += (
+            block.five * credit * 5 +
+            block.four * credit * 4 +
+            block.three * credit * 3 +
+            block.two * credit * 2 +
+            block.one * credit * 1
+        )
+        total_graded_credits += credit * (
+            block.five + block.four + block.three + block.two + block.one
+        )
+
+    if total_graded_credits == 0:
+        return "Invalid: No graded credits provided."
+
+    return round(total_weighted_score / total_graded_credits, 2)
+
+# API route
 @app.post("/calculate/")
 def get_cgpa(data: GradeInput):
-    cgpa = calculate_grade(data.total_credit, data.five, data.four, data.three, data.two, data.one, data.pass_cred)
-    return {"CGPA": round(cgpa, 2) if isinstance(cgpa, float) else cgpa}
+    cgpa = calculate_cgpa(data)
+    return {"CGPA": cgpa}
