@@ -46,11 +46,33 @@ Run (in another terminal):
 python -m http.server 8001
 ```
 
+Then, in your browser run,
+```bash
+[http://127.0.0.1:8001](http://127.0.0.1:8000)
+```
+
 ### 📌 Usage Instructions
-- Open the frontend (index.html).
-- Enter the total credits and your grades.
-- Click "Calculate CGPA".
-- Click "Refresh" to reset inputs.
+- Open the frontend
+  - Open index.html in your browser (you can run python -m http.server 8001 to serve it locally).
+
+- Enter total credits
+  - Input the total number of credits you've completed (including pass/fail courses).
+
+- Enter pass/fail credits
+  - Specify how many of those credits are from pass/fail courses (they'll be excluded from the CGPA).
+
+- Add course credit types
+  - Click the "Add Credit Type" button to enter courses with a specific credit value (e.g., 5, 3, etc.).
+  - You might have to click "Add Credit Type" more than once if have taken courses with different credit value.
+
+- Fill in grade counts
+  - For each credit type, enter how many times you received each grade (from 5 to 1).
+
+- Click "Calculate CGPA"
+  - The app will compute your CGPA based on the University of Oulu's grading system.
+
+- Click "Refresh" to reset inputs
+  - This clears all fields and allows you to start over.
 
 ### 🚀 Future Improvements
 ✅ Deploying online using Vercel or Render
